@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import logo from './logo.svg';
 import './App.css';
-import { Jumbotron, Button, Nav, NavItem, NavLink } from 'reactstrap'
+import { Jumbotron, Button, Nav, NavItem, NavLink, InputGroup, InputGroupAddon, Input } from 'reactstrap'
 import 'react-tabs/style/react-tabs.css';
 
 class App extends Component {
         render() {
                 return (
                         <div>
-                                <Navigation />
+                                <Navigation isLoggedIn={false} />
                         </div>
 
                 );
@@ -23,26 +23,23 @@ function Navigation(props) {
                 <Tabs>
                         <TabList>
                                 <Tab>Welcome</Tab>
-                                <Tab>Medication</Tab>
-                                <Tab>Schedules</Tab>
+                                {props.isLoggedIn ? <Tab>Medication</Tab> : null}
+                                {props.isLoggedIn ? <Tab>Schedules</Tab> : null}
+                                {props.isLoggedIn ? null : <Tab>Signup</Tab>}
                                 <Tab>{props.isLoggedIn ? "Logout" : "Login"}</Tab>
                         </TabList>
 
                         <TabPanel>
                                 <Welcome />
                         </TabPanel>
-                        <TabPanel>
-                                <h2>Enter a new medication here</h2>
-                        </TabPanel>
-                        <TabPanel>
-                                <h2>Medication schedules</h2>
-                        </TabPanel>
-                        <TabPanel>
-                                <h2>Login or logout here idk</h2>
-                        </TabPanel>
+                        {props.isLoggedIn ? <TabPanel><h2>Enter a new medication here</h2></TabPanel> : null}
+                        {props.isLoggedIn ? <TabPanel><h2>Medication schedules</h2></TabPanel> : null}
+                {props.isLoggedin ? null : <TabPanel><SignupComp /></TabPanel>}
+                        <TabPanel><LoginComp /></TabPanel>
                 </Tabs>
         );
 }
+
 
 class Welcome extends Component {
         render() {
@@ -59,6 +56,60 @@ class Welcome extends Component {
                         </div>
                         );
         }
+}
+
+
+function SignupComp() {
+        return (
+                <div>
+                        <Jumbotron>
+                                <h2 className="display-5">Join Pillzio today!</h2>
+                                <p className="lead">Keep track of all of your medications using the Pillzio platform! All you need is an email and a password.</p>
+
+                                <hr className="my-2" />
+                                <div>
+                                        <InputGroup>
+                                                <InputGroupAddon addonType="prepend">Email</InputGroupAddon>
+                                                <Input />
+                                        </InputGroup>
+                                        <br />
+                                        <InputGroup>
+                                                <InputGroupAddon addonType="prepend">Password</InputGroupAddon>
+                                                        <Input />
+                                        </InputGroup>
+                                </div>
+                                <br />
+                                <Button>Register</Button>
+                        </Jumbotron>
+                </div>
+        );
+}
+
+
+function LoginComp() {
+        return (
+                <div>
+                        <Jumbotron>
+                                <h2 className="display-5">Welcome back to Pillzio!</h2>
+                                <p className="lead">We missed you! We kept your reminders safe while you were gone.</p>
+
+                                <hr className="my-2" />
+                                <div>
+                                        <InputGroup>
+                                                <InputGroupAddon addonType="prepend">Email</InputGroupAddon>
+                                                <Input />
+                                        </InputGroup>
+                                        <br />
+                                        <InputGroup>
+                                                <InputGroupAddon addonType="prepend">Password</InputGroupAddon>
+                                                        <Input />
+                                        </InputGroup>
+                                </div>
+                                <br />
+                                <Button>Login</Button>
+                        </Jumbotron>
+                </div>
+        );
 }
 
 export default App;
